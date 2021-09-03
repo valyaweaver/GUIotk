@@ -6,7 +6,7 @@ import socket
 
 window = Tk()
 window.title("OTK")
-window.geometry('1000x800')
+window.geometry('1000x250')
 global list
 list=[]
 def entr1(event):
@@ -19,9 +19,14 @@ def entr2(event):
     txt2.focus()
 
 def entr3(event):
+    txt1.focus()
+def entr4(event):
     defec()
-    txt.focus()
-
+    txt2.focus()
+def entr5(event):
+    txt1.delete(0, END)
+    txt2.delete(0, END)
+    txt1.focus()
 def init():
     global operator
     operator = format(txt.get())
@@ -35,14 +40,25 @@ def sern():
     sn = format(txt1.get())
     lbl1.configure(text=sn, font='Times 25')
     txt2.focus()
-    txt2.bind('<Return>', entr2)
+    txt2.bind('<Return>', entr4)
    # txt1.bind('<Return>', entr2)
 def defec():
     global defect
     defect = format(txt2.get())
-
-    if defect != 'stop' and defect != 'reset':
-
+    if defect == 'none':
+        tistamp = str(datetime.now())
+        f = open("C:/Users/hp/PycharmProjects/gui otk/otk.txt", 'a')
+        f.write(str(sn + ' ' + operator + ' ' + tistamp + ' ' + '\n'))
+        f.close()
+        lbl1.configure(text='', font='Times 25')
+        lbl2.configure(text='', font='Times 25')
+        txt2.bind('<Return>', entr5)
+        txt1.delete(0, END)
+        txt2.delete(0, END)
+        txt1.focus()
+        list.clear()
+    if defect != 'stop' and defect != 'reset' and defect != 'none':
+        txt2.bind('<Return>', entr4)
         list.append(defect)
         lbl2.configure(text=list, font='Times 25')
         txt2.delete(0, END)
@@ -56,6 +72,7 @@ def defec():
         f.close()
         lbl1.configure(text='', font='Times 25')
         lbl2.configure(text='', font='Times 25')
+        txt2.bind('<Return>', entr3)
         txt1.delete(0, END)
         txt2.delete(0, END)
         txt1.focus()
@@ -63,6 +80,7 @@ def defec():
     if defect == 'reset':
         lbl1.configure(text='', font='Times 25')
         lbl2.configure(text='', font='Times 25')
+        txt2.bind('<Return>', entr3)
         txt1.delete(0, END)
         txt2.delete(0, END)
         txt1.focus()
@@ -76,7 +94,7 @@ lbl = Label(window, font='Times 25', text="ОПЕРАТОР")
 lbl.grid(column=3, row=1)
 lbl1 = Label(window, font='Times 25', text="Serial number")
 lbl1.grid(column=3, row=2)
-lbl2 = Label(window, font='Times 25', text="Serial number")
+lbl2 = Label(window, font='Times 25', text="Defect code")
 lbl2.grid(column=3, row=3)
 
 txt = Entry(window, font='Times 25', width=20)
